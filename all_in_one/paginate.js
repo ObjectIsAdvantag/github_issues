@@ -69,7 +69,7 @@ function enrichWithComments(issues) {
   const actions = issues.map(enrichIssue)
   Promise.all(actions)
     .then((issuesWithComments) => {
-      const output_file = "./all_issues.json"
+      const output_file = "./issues.json"
       require('fs').writeFile(
         output_file,
         JSON.stringify(issuesWithComments, null, 4),
