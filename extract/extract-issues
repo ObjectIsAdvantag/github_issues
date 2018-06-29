@@ -1,0 +1,17 @@
+#!/usr/bin/bash
+
+token="${GIT_TOKEN}"
+endpoint="${GIT_ENDPOINT:-https://wwwin-github.cisco.com/api/v3}"
+owner="${GIT_OWNER:-DevNet-PubHub}"
+repo="${GIT_REPO:-cisco-api-style-guide}"
+
+echo "fetching list of issues from git repo: $endpoint/repos/$owner/$repo"
+now=$(date +"%m_%d_%Y")
+raw_issues="tmp/raw_issues_$now.json"
+curl -s -X GET   "$endpoint/repos/$owner/$repo/issues?sort=created&direction=asc&state=all"   -H "Authorization: token $token" > "$raw_issues"
+echo "wrote temporary file as $raw_issues" 
+
+echo "extracting issues details..."
+extracted_issues="./issues.json"
+cat "$raw_issues" | jq '[ .[] | {  number: .number,  state: .state,  title:  .title,  body: .body,  createdBy: .user.login,  assignee: .assignee.login,  commentsUrl: .comments_url,   commentsNb: .comments } ]' > "$extracted_issues"
+echo "extraction completed, check file: $extracted_issues"

@@ -1,0 +1,4 @@
+node_modules
+.vscode
+issues.json
+enriched.json

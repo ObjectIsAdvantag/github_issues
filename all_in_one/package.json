@@ -1,0 +1,15 @@
+{
+  "name": "consolidate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@octokit/rest": "^15.9.3",
+    "request": "^2.87.0"
+  }
+}
