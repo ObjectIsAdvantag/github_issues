@@ -1,0 +1,86 @@
+#!/usr/bin/env node
+
+//
+// Copyright (c) 2018 Cisco Systems Inc
+// Licensed under the MIT License 
+//
+
+var program = require('commander');
+
+program
+    .version('v0.1')
+    .description('Utility to display issues')
+
+
+program
+    .command('show <number>')
+    .description('display details for issue')
+    .action(function (numberAsArg) {
+
+        // Check args
+        const number = parseInt(numberAsArg)
+        if (isNaN(number)) {
+            console.log(`incorret value '${numberAsArg}'`)
+            console.log(`please specify an integer for the issue number`)
+            return
+        }
+
+        // Look for issue
+        const issues = require("./issues.json")
+        const issue = issues.find((elem) => { return (elem.number === number)})
+
+        // Issue not present
+        if (!issue) {
+            console.log(`could not find issue with number: '${number}'`)
+            console.log(`please check issue numbers with command: 'issues list'`)
+            return
+        }
+
+        // Format 
+        if (issue.state == 'open') issue.state = 'opened'
+        console.log(`#${numberAsArg.padStart(3)} - ${issue.title}`)
+        console.log(`state      : ${issue.state}`)
+        console.log(`assigned to: ${issue.assignee}`)
+        console.log(`created by : ${issue.createdBy}`)
+        console.log('"')
+        console.log(`${issue.body}`)
+
+        // Add comments
+        let comments = false
+        issue.comments.forEach((comment) => {
+            comments = true
+            console.log(`\nComment by: ${comment.author}`)
+            console.log(`${comment.body}`)
+        })
+        if (!comments) {
+            console.log('"\n\nno comments.')
+        }
+    })
+
+program
+    .command('ls')
+    .description('display a list of issues in opened state by default')
+    .option('-a, --all', 'show all issues (both opened and closed)')
+    .action(function (cmd) {
+        let showAll = false
+        if (cmd.all) {
+           showAll = cmd.all
+        }
+
+        // Read issues
+        const issues = require("./issues.json")
+
+        // Format 
+        issues.forEach(issue => {
+            if (!showAll && (issue.state === 'closed')) {
+                return
+            }
+
+            // Display issue
+            if (issue.state === 'open') issue.state = 'opened'
+            console.log(`${("#" + issue.number).toString().padStart(4)} [${issue.state}] ${issue.title}`)
+        })
+    })
+
+
+program.parse(process.argv)
