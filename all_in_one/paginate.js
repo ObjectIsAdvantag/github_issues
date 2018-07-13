@@ -117,6 +117,11 @@ function enrichIssue(issue) {
         }
       })
 
+      console.log(`found ${issue.labels.length} labels for issue: ${issue.number}`)
+      const labelsCurated = issue.labels.map((label) => {
+        return label.name
+      })
+
       // prep result
       let issuesCurated = {
         number: issue.number,
@@ -132,6 +137,7 @@ function enrichIssue(issue) {
         issuesCurated.assignee = issue.assignee.login
       }
       issuesCurated.comments = commentsCurated
+      issuesCurated.labels = labelsCurated
       resolve(issuesCurated)
     });
   });

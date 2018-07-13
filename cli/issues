@@ -37,24 +37,7 @@ program
         }
 
         // Format 
-        if (issue.state == 'open') issue.state = 'opened'
-        console.log(`#${numberAsArg.padStart(3)} - ${issue.title}`)
-        console.log(`state      : ${issue.state}`)
-        console.log(`assigned to: ${issue.assignee}`)
-        console.log(`created by : ${issue.createdBy}`)
-        console.log('"')
-        console.log(`${issue.body}`)
-
-        // Add comments
-        let comments = false
-        issue.comments.forEach((comment) => {
-            comments = true
-            console.log(`\nComment by: ${comment.author}`)
-            console.log(`${comment.body}`)
-        })
-        if (!comments) {
-            console.log('"\n\nno comments.')
-        }
+        printIssue(issue)
     })
 
 program
@@ -82,5 +65,55 @@ program
         })
     })
 
+program
+    .command('export')
+    .description('prints out a detailled export with all issues and comments')
+    .option('-a, --all', 'show all issues (both opened and closed)')
+    .action(function (cmd) {
+        let showAll = false
+        if (cmd.all) {
+           showAll = cmd.all
+        }
+
+        // Read issues
+        const issues = require("./issues.json")
+
+        // Format 
+        issues.forEach(issue => {
+            if (!showAll && (issue.state === 'closed')) {
+                return
+            }
+
+            // Display issue
+            console.log("#######################################################")
+            printIssue(issue)
+            console.log("\n\n")
+        })
+    })
 
 program.parse(process.argv)
+
+
+
+function printIssue(issue) {
+
+    if (issue.state == 'open') issue.state = 'opened'
+    console.log(`#${issue.number.toString().padStart(3)} - ${issue.title}`)
+    console.log(`state      : ${issue.state}`)
+    console.log(`assigned to: ${issue.assignee}`)
+    console.log(`created by : ${issue.createdBy}`)
+    console.log(`labels     : ${issue.labels.toString()}`)
+    console.log('"')
+    console.log(`${issue.body}`)
+
+    // Add comments
+    let comments = false
+    issue.comments.forEach((comment) => {
+        comments = true
+        console.log(`\nComment by: ${comment.author}`)
+        console.log(`${comment.body}`)
+    })
+    if (!comments) {
+        console.log('"\n\nno comments.')
+    }
+}
