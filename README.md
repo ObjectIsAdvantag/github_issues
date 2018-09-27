@@ -6,10 +6,12 @@
 
 ## How to use
 
-Basically, you could run the extract script to export a list of issues from a git repo,
-then run the consolidate script to generate a full issues list (with comments).
+Basically, you would:
+- run the [extract script](./extract) to export a list of issues from a git repo,
+- then run the [enrich script](./enrich) to generate a full issues list (with comments) as JSON,
+- and finally run the [beautifier cli](./cli) against the JSON.
 
-**OR BETTER: simply run the [all_in_one](./all_in_one) script**
+**OR simply run the [all_in_one](./all_in_one) script**, and then the beautifier.
 
 You'll get such as JSON array:
 
@@ -38,6 +40,6 @@ You'll get such as JSON array:
 ]
 ```
 
-### Pretty print
+### Beautifier
 
 Use the provided [beautifier CLI](./cli) to pretty print the JSON list of issues and associated comments.
