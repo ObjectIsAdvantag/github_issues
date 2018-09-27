@@ -128,6 +128,7 @@ function enrichIssue(issue) {
         state: issue.state,
         createdBy: issue.user.login,
         assignee: null,
+        milestone: null,
         title: issue.title,
         body: issue.body,
         commentsUrl: issue.comments_url,
@@ -136,6 +137,10 @@ function enrichIssue(issue) {
       if (issue.assignee) {
         issuesCurated.assignee = issue.assignee.login
       }
+      if (issue.milestone) {
+        issuesCurated.milestone = issue.milestone.title
+      }
+      
       issuesCurated.comments = commentsCurated
       issuesCurated.labels = labelsCurated
       resolve(issuesCurated)

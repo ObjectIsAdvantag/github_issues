@@ -44,10 +44,16 @@ program
     .command('ls')
     .description('display a list of issues in opened state by default')
     .option('-a, --all', 'show all issues (both opened and closed)')
+    .option('-m, --milestone <value>', 'filter on milestone')
     .action(function (cmd) {
         let showAll = false
         if (cmd.all) {
            showAll = cmd.all
+        }
+
+        let filteredMilestone = undefined
+        if (cmd.milestone) {
+            filteredMilestone = cmd.milestone
         }
 
         // Read issues
@@ -56,6 +62,13 @@ program
         // Format 
         issues.forEach(issue => {
             if (!showAll && (issue.state === 'closed')) {
+                return
+            }
+
+            // If there is a milestone filter, filter out
+            if ((filteredMilestone)
+                && ((issue.milestone === null) 
+                    || (filteredMilestone !== issue.milestone))) {
                 return
             }
 
