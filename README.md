@@ -1,8 +1,8 @@
-# Utilities to share git issues
+# Utilities to share Github issues
 
-**Why: you want to share the list of issues with non-members of a git private repo? If so, you're at the right place.**
+**Why: you want to share Github issues with non-members of a private repo? If so, you're at the right place.**
 
-> Root cause: even though you can share code by create a new remote, there is no quick way to extract a list of issues - with comments. The git API will give you [a list of issues (without comments)](https://developer.github.com/v3/issues/#response) for a repo, and another enpoint will give you comments per issue number. Job here is to extract issues, filter out pull requests, iterate over comments, consolidate and pretty print.
+> Root cause: even though you can share code by creating a new remote, there is no easy way to extract a list of issues (including comments). The github api will give you [a list of issues (without comments)](https://developer.github.com/v3/issues/#response), and another enpoint will give you all comments for an issue. Job here is to extract all issues, filter out pull requests, iterate over comments, consolidate a list and pretty print it.
 
 ## How to use
 
