@@ -38,4 +38,6 @@ You'll get such as JSON array:
 ]
 ```
 
-**Coming**: use the provided CLI to pretty print the JSON list of issues with comments.
+### Pretty print
+
+Use the provided [beautifier CLI](./cli) to pretty print the JSON list of issues and associated comments.
