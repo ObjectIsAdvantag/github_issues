@@ -1,6 +1,6 @@
 # Issues beautifyer: from JSON to the command line
 
-Utility to visualize issues in a pretty
+Utility to visualize issues in a pretty console print
 
 Generate a list of issues from the [node exporter utility](../all_in_one),
 and place the generated `issues.json` file in the current directory.
