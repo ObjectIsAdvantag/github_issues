@@ -82,10 +82,16 @@ program
     .command('export')
     .description('prints out a detailled export with all issues and comments')
     .option('-a, --all', 'show all issues (both opened and closed)')
+    .option('-m, --milestone <value>', 'filter on milestone')
     .action(function (cmd) {
         let showAll = false
         if (cmd.all) {
            showAll = cmd.all
+        }
+
+        let filteredMilestone = undefined
+        if (cmd.milestone) {
+            filteredMilestone = cmd.milestone
         }
 
         // Read issues
@@ -94,6 +100,13 @@ program
         // Format 
         issues.forEach(issue => {
             if (!showAll && (issue.state === 'closed')) {
+                return
+            }
+
+            // If there is a milestone filter, filter out
+            if ((filteredMilestone)
+                && ((issue.milestone === null) 
+                    || (filteredMilestone !== issue.milestone))) {
                 return
             }
 
@@ -115,6 +128,7 @@ function printIssue(issue) {
     console.log(`state      : ${issue.state}`)
     console.log(`assigned to: ${issue.assignee}`)
     console.log(`created by : ${issue.createdBy}`)
+    console.log(`milestone  : ${issue.milestone}`)
     console.log(`labels     : ${issue.labels.toString()}`)
     console.log('"')
     console.log(`${issue.body}`)
